@@ -1,5 +1,4 @@
 import "./LogSettings.css";
-import ApiStatus from "../ApiStatus/ApiStatus";
 import StatusCard from "../StatusCard/StatusCard";
 
 interface LogSettingsProps {
@@ -17,13 +16,10 @@ interface LogSettingsProps {
 const LogSettings = ({
   values,
   handleChange,
-  pollTrigger,
   averageDuration,
 }: LogSettingsProps) => {
   return (
     <div className="logs-settings">
-      <ApiStatus refreshTrigger={pollTrigger} />
-
       <StatusCard
         label="Auto Refresh"
         name="autoRefresh"
