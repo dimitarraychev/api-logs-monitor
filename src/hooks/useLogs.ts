@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import type { LogEntryType } from "../types/Logs";
 import { calculateAverageDuration } from "../utils/calculateAverageDuration";
-// import { logsExample } from "../assets/logsExample";
-import { useApi } from "../context/ApiContext";
+import { useSource } from "../context/SourceContext";
+import { SOURCE_ROUTES } from "../types/Source";
 
 export interface UseLogsProps {
   pollInterval?: number;
@@ -21,11 +21,9 @@ export const useLogs = ({
   const [error, setError] = useState<string | null>(null);
   const [pollTrigger, setPollTrigger] = useState(0);
   const [averageDuration, setAverageDuration] = useState<number | null>(null);
-  const { selectedApi } = useApi();
-  const URL =
-    selectedApi === "game-api"
-      ? `/game-api/logs?limit=${limit}`
-      : `/report-api/logs?limit=${limit}`;
+  const { source } = useSource();
+  const basePath = SOURCE_ROUTES[source] || SOURCE_ROUTES["game-api"];
+  const URL = `${basePath}?limit=${limit}`;
 
   const containsKeyword = (log: LogEntryType, keyword: string) =>
     log.message?.toLowerCase().includes(keyword.toLowerCase());
@@ -35,7 +33,6 @@ export const useLogs = ({
   const intervalRef = useRef<number | undefined>(undefined);
 
   const fetchLogs = async () => {
-    // return setLogs(logsExample.logs);
     setLoading(true);
     try {
       const res = await fetch(URL);
@@ -67,7 +64,7 @@ export const useLogs = ({
         }
       };
     }
-  }, [limit, pollInterval, autoRefresh, selectedApi]);
+  }, [limit, pollInterval, autoRefresh, source]);
 
   return {
     loading,

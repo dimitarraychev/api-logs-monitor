@@ -1,10 +1,11 @@
 import "./Header.css";
 import logoSvg from "../../assets/server.svg";
 import CustomRadio from "../CustomRadio/CustomRadio";
-import { useApi } from "../../context/ApiContext";
+import { useSource } from "../../context/SourceContext";
+import type { SourceType } from "../../types/Source";
 
 const Header = () => {
-  const { selectedApi, setSelectedApi } = useApi();
+  const { source, setSource } = useSource();
 
   return (
     <header className="header">
@@ -14,14 +15,14 @@ const Header = () => {
       </div>
 
       <CustomRadio
-        name="selectedApi"
-        value={selectedApi}
+        name="source"
+        value={source}
         options={[
           { label: "game-api", value: "game-api" },
           { label: "report-api", value: "report-api" },
-          { label: "report-cron", value: "report-cron" },
+          { label: "powerbi-cron", value: "powerbi-cron" },
         ]}
-        onChange={(val) => setSelectedApi(val)}
+        onChange={(val) => setSource(val as SourceType)}
       />
     </header>
   );
