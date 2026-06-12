@@ -18,6 +18,7 @@ const LogEntry = ({
 }: LogEntryProps) => {
   const { level, message, metadata, timestamp } = log;
   const { method, path, body, status, durationMs, responseBody } = metadata;
+  const command = body?.command;
 
   const timestampConv = shortFormatDate(timestamp);
 
@@ -26,7 +27,13 @@ const LogEntry = ({
       className={`log-entry ${highlight ? "log-new" : ""}`}
       open={isExpanded}
     >
-      <summary className="log-summary" onClick={toggleExpand}>
+      <summary
+        className="log-summary"
+        onClick={(e) => {
+          e.preventDefault();
+          toggleExpand();
+        }}
+      >
         <span className="log-timestamp">{timestampConv}</span>
         <span className={`log-level log-level-${level}`}>
           {level.toUpperCase()}
@@ -45,7 +52,9 @@ const LogEntry = ({
         )}
         {method && <span className="log-method">{method}</span>}
         {path && <span className="log-path">{path}</span>}
-        <span className="log-message">{message}</span>
+        <span className="log-message">
+          {message} {command && <em>({command})</em>}
+        </span>
       </summary>
 
       <div className="log-details">
