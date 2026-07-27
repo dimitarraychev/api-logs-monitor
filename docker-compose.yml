@@ -14,9 +14,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
-      - "traefik.http.routers.logs-monitor.rule=Host(`${DOMAIN}`) && PathPrefix(`/logs`)"
-      - "traefik.http.middlewares.logs-monitor-strip.stripprefix.prefixes=/logs"
-      - "traefik.http.routers.logs-monitor.middlewares=logs-monitor-strip@docker"
+      - "traefik.http.routers.logs-monitor.rule=Host(`${DOMAIN}`) && PathPrefix(`/logs-monitor`)"
+      - "traefik.http.routers.logs-monitor.priority=10"
+      - "traefik.http.middlewares.logs-monitor-strip.stripprefix.prefixes=/logs-monitor"
+      - "traefik.http.routers.logs-monitor.middlewares=authentik-auth@docker,logs-monitor-strip@docker"
       - "traefik.http.routers.logs-monitor.entrypoints=websecure"
       - "traefik.http.routers.logs-monitor.tls=true"
       - "traefik.http.services.logs-monitor.loadbalancer.server.port=80"
