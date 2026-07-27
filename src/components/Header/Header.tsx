@@ -17,11 +17,7 @@ const Header = () => {
       <CustomRadio
         name="source"
         value={source}
-        options={[
-          { label: "game-api", value: "game-api" },
-          { label: "report-api", value: "report-api" },
-          { label: "powerbi-cron", value: "powerbi-cron" },
-        ]}
+        options={[{ label: "powerbi-cron", value: "powerbi-cron" }]}
         onChange={(val) => setSource(val as SourceType)}
       />
     </header>

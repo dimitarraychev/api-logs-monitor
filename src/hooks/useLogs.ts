@@ -22,7 +22,7 @@ export const useLogs = ({
   const [pollTrigger, setPollTrigger] = useState(0);
   const [averageDuration, setAverageDuration] = useState<number | null>(null);
   const { source } = useSource();
-  const basePath = SOURCE_ROUTES[source] || SOURCE_ROUTES["game-api"];
+  const basePath = SOURCE_ROUTES[source] || SOURCE_ROUTES["powerbi-cron"];
   const URL = `${basePath}?limit=${limit}`;
 
   const containsKeyword = (log: LogEntryType, keyword: string) =>

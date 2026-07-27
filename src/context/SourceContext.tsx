@@ -15,7 +15,7 @@ export const useSource = () => {
 };
 
 export const SourceProvider = ({ children }: { children: ReactNode }) => {
-  const [source, setSource] = useState<SourceType>("game-api");
+  const [source, setSource] = useState<SourceType>("powerbi-cron");
 
   return (
     <SourceContext.Provider

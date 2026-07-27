@@ -5,16 +5,24 @@ services:
       network: host
     image: logs-monitor:latest
     container_name: logs-monitor
-    ports:
-      - "8085:80"
-      - "10443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nginx.crt:/etc/nginx/ssl/nginx.crt:ro
-      - ./nginx.key:/etc/nginx/ssl/nginx.key:ro
     restart: always
+    networks:
+      - global-link
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.logs-monitor.rule=Host(`${DOMAIN}`) && PathPrefix(`/logs-monitor`)"
+      - "traefik.http.middlewares.logs-monitor-strip.stripprefix.prefixes=/logs-monitor"
+      - "traefik.http.routers.logs-monitor.middlewares=logs-monitor-strip@docker"
+      - "traefik.http.routers.logs-monitor.entrypoints=websecure"
+      - "traefik.http.routers.logs-monitor.tls=true"
+      - "traefik.http.services.logs-monitor.loadbalancer.server.port=80"
 
 networks:
-  default:
-    name: global-link
+  global-link:
+    external: true
+  proxy:
     external: true
